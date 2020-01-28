@@ -21,6 +21,10 @@
                                 <p class="country">{{item.item_description}}</p>
                                 <a href="" class="site">Ksh {{item.price}}</a>
                             </li>
+
+                            <li class="mt-3 text-center">
+                                <button class="btn btn-sm btn-primary" @click="addItem">Add another</button>
+                            </li>
                         </ul>
                     </div>
 
