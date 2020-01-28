@@ -11356,3 +11356,42 @@ a.text-dark:focus {
   }
 }
 
+.ul-1 {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.ul-1 .li-1 {
+  background: #eeeeee;
+  padding: 1em;
+  margin-right: 10px;
+  width: 40%;
+  height: 200px;
+  margin-bottom: 1em;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+}
+
+.ul-1 .li-1 p {
+  margin: 0;
+}
+
+.ul-1 .li-1 p.name {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.ul-1 .li-1 p.country {
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  -webkit-box-flex: 1;
+          flex-grow: 1;
+}
+

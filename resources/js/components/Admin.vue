@@ -2,19 +2,43 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <img style="width:50%; height:50%" src="./../../../public/images/add.png">
 
-                        <div class="no-items-added mt-4">
-                            <p class="font-weight-bold">No items added in the site. Navigate to the admin section to add items</p>
-                        </div>
+                <!--Loading animation-->
+                <div class="text-center" v-if="loadingData">
+                    <h6 class="font-weight-bold cyan">We are loading your data. Please wait...</h6>
+                    <div class="spinner-border text-primary mt-3 mb-3" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <!--//End Loading animation-->
 
-                        <div class="add-btn mt-3">
-                            <button class="btn btn-primary btn-sm" @click="addItem">Add an item</button>
+                <div class="not-loading" v-if="!loadingData">
+
+                    <div class="col-md-10 mx-auto" v-if="itemsAdded">
+                        <ul class="ul-1">
+                            <li class="li-1" v-for="item in items" :key="item.id">
+                                <p class="name">{{item.item_name}}</p>
+                                <p class="country">{{item.item_description}}</p>
+                                <a href="" class="site">Ksh {{item.price}}</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card" v-else>
+                        <div class="card-body text-center">
+                            <img style="width:50%; height:50%" src="./../../../public/images/shop.png">
+
+                            <div class="no-items-added mt-4">
+                                <p class="font-weight-bold">No items added. Get started now!</p>
+                            </div>
+
+                            <div class="add-btn mt-3">
+                                <button class="btn btn-primary btn-sm" @click="addItem">Add an item</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -81,12 +105,27 @@ import { SweetModal, SweetModalTab } from 'sweet-modal-vue'
 
 export default {
     mounted() {
-        console.log('component mounted')
+        //console.log('component mounted')
+        this.showItemsCreated()
+        Fire.$on('refreshItems', () => {
+                this.showItemsCreated();
+            });
+    },
+
+    computed: { 
+        itemsAdded() {
+            if(this.items.length > 0)
+                return true
+            else
+             return false
+        },
     },
 
     data() {
         return {
+            loadingData: true,
             editmode: false,
+            items: [],
             form: new Form({
                 id: '',
                 item_name: '',
@@ -101,11 +140,43 @@ export default {
     },
 
     methods: {
+        showItemsCreated() {
+            axios.get('api/items-created')
+                .then(response => {
+                    //console.log(response)
+                    this.items = response.data
+                    this.loadingData = false
+                })
+                .catch(() => {
+
+                })
+        },
         addItem() {
             this.editmode = false;
             //this.form.clear()
             this.$refs.addItemModal.open()
-        }
+        },
+
+        createItem() {
+                this.form.post('api/save-item')
+                .then(() => {
+                    Fire.$emit('refreshItems');
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Item added successfully'
+                        })
+                    
+                    this.$refs.addItemModal.close()
+                    this.form.reset();
+                })
+                .catch(() => {
+                    Toast.fire({
+                        type: 'error',
+                        title: 'Something went wrong. Try again...'
+                    })
+                });
+                
+            }
     }
     
 }

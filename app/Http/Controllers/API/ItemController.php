@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Product;
+
 class ItemController extends Controller
 {
     /**
@@ -20,7 +22,9 @@ class ItemController extends Controller
 
     public function index()
     {
-        return Product::all();
+        $products = Product::all();
+
+        return response()->json($products, 201);
     }
 
     /**
@@ -49,11 +53,15 @@ class ItemController extends Controller
         ]);
 
         // Add User to DB
-        return Product::create([
-            'item_name' => $request['item_name'],
-            'item_description' => $request['item_description'],
-            'price' => $request['price'],
-        ]);
+        $product = new Product();
+
+        $product->item_name = $request->item_name;
+        $product->item_description = $request->item_description;
+        $product->price = $request->price;
+
+        $product->save();
+
+        return response()->json($product, 201);
     }
 
     /**

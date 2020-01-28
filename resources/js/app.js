@@ -13,6 +13,16 @@ window.Form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 
+import Swal from 'sweetalert2';
+window.Swal = Swal;
+
+let Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+  })
+
 import VueNumeric from 'vue-numeric'
 Vue.use(VueNumeric)
 
@@ -29,6 +39,9 @@ const router = new VueRouter({
     mode: 'history',
     routes // short for `routes: routes`
 })
+
+let Fire = new Vue();
+window.Fire = Fire;
 
 /**
  * The following block of code may be used to automatically register your

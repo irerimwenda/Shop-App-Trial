@@ -17,6 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResources([
-    'item' => 'API\ItemController'
-]);
+// Route::apiResources([
+//     'item' => 'API\ItemController'
+// ]);
+
+Route::get('items-created', 'API\ItemController@index');
+Route::post('save-item', 'API\ItemController@store');
+// Route::put('update-item/{id}', 'API\ItemController@update');
+// Route::delete('delete-item/{id}', 'API\ItemController@destroy');
