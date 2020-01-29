@@ -2554,6 +2554,48 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Something went wrong. Try again...'
         });
       });
+    },
+    updateItem: function updateItem() {
+      var _this4 = this;
+
+      this.form.put('api/update-item/' + this.form.id).then(function (response) {
+        Toast.fire({
+          type: 'success',
+          title: 'Item updated successfully'
+        });
+        Fire.$emit('refreshItems');
+
+        _this4.$refs.addItemModal.close();
+
+        _this4.form.reset();
+      })["catch"](function () {
+        Toast.fire({
+          type: 'error',
+          title: 'Something went wrong. Try again...'
+        });
+      });
+    },
+    deleteItem: function deleteItem(id) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete item!'
+      }).then(function (result) {
+        // Send request to the server
+        if (result.value) {
+          axios["delete"]('api/delete-item/' + id).then(function () {
+            Swal.fire('Deleted!', 'The item has been deleted.', 'success'); //Fire refresh content event
+
+            Fire.$emit('refreshItems');
+          })["catch"](function () {
+            Swal("Failed!", "There was something wrong.", "warning");
+          });
+        }
+      });
     }
   }
 });
@@ -2587,9 +2629,61 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
-    console.log('Component mounted.');
+    var _this = this;
+
+    //console.log('component mounted')
+    this.showItemsCreated();
+    Fire.$on('refreshItems', function () {
+      _this.showItemsCreated();
+    });
+  },
+  data: function data() {
+    return {
+      items: []
+    };
+  },
+  computed: {
+    itemsAdded: function itemsAdded() {
+      if (this.items.length > 0) return true;else return false;
+    }
+  },
+  methods: {
+    showItemsCreated: function showItemsCreated() {
+      var _this2 = this;
+
+      axios.get('api/items-created').then(function (response) {
+        //console.log(response)
+        _this2.items = response.data;
+        _this2.loadingData = false;
+      })["catch"](function () {});
+    }
   }
 });
 
@@ -43742,10 +43836,28 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [_c("i", { staticClass: "fa fa-pencil" })]
+                                  [
+                                    _c("i", {
+                                      staticClass: "fa fa-pencil blue"
+                                    })
+                                  ]
                                 ),
                                 _vm._v(" "),
-                                _vm._m(2, true)
+                                _c(
+                                  "a",
+                                  {
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deleteItem(item.id)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("i", {
+                                      staticClass: "fa fa-trash pl-2 red"
+                                    })
+                                  ]
+                                )
                               ])
                             ])
                           }),
@@ -43773,7 +43885,7 @@ var render = function() {
                           }
                         }),
                         _vm._v(" "),
-                        _vm._m(3),
+                        _vm._m(2),
                         _vm._v(" "),
                         _c("div", { staticClass: "add-btn mt-3" }, [
                           _c(
@@ -44073,14 +44185,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("a", { attrs: { href: "" } }, [
-      _c("i", { staticClass: "fa fa-trash pl-2" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "no-items-added mt-4" }, [
       _c("p", { staticClass: "font-weight-bold" }, [
         _vm._v("No items added. Get started now!")
@@ -44109,32 +44213,74 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-8" }, [
+        !_vm.loadingData
+          ? _c("div", { staticClass: "not-loading" }, [
+              _vm.itemsAdded
+                ? _c("div", { staticClass: "col-md-10 mx-auto" }, [
+                    _c("table", { staticClass: "table table-bordered" }, [
+                      _vm._m(0),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.items, function(item) {
+                          return _c("tr", { key: item.id }, [
+                            _c("th", { attrs: { scope: "row" } }, [
+                              _vm._v(_vm._s(item.id))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.item_name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(item.item_description))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v("KSH " + _vm._s(item.price))])
+                          ])
+                        }),
+                        0
+                      )
+                    ])
+                  ])
+                : _vm._e()
+            ])
+          : _c("div", { staticClass: "card" }, [_vm._m(1)])
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row justify-content-center" }, [
-        _c("div", { staticClass: "col-md-8" }, [
-          _c("div", { staticClass: "card" }, [
-            _c("div", { staticClass: "card-body text-center" }, [
-              _c("img", {
-                staticStyle: { width: "50%", height: "50%" },
-                attrs: { src: __webpack_require__(/*! ./../../../public/images/add.png */ "./public/images/add.png") }
-              }),
-              _vm._v(" "),
-              _c("div", { staticClass: "no-items-added mt-4" }, [
-                _c("p", { staticClass: "font-weight-bold" }, [
-                  _vm._v(
-                    "No items added in the site. Navigate to the admin section to add items"
-                  )
-                ])
-              ])
-            ])
-          ])
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Item")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Description")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Price")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-body text-center" }, [
+      _c("img", {
+        staticStyle: { width: "50%", height: "50%" },
+        attrs: { src: __webpack_require__(/*! ./../../../public/images/add.png */ "./public/images/add.png") }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "no-items-added mt-4" }, [
+        _c("p", { staticClass: "font-weight-bold" }, [
+          _vm._v(
+            "No items added in the site. Navigate to the admin section to add items"
+          )
         ])
       ])
     ])

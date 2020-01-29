@@ -23,5 +23,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('items-created', 'API\ItemController@index');
 Route::post('save-item', 'API\ItemController@store');
-// Route::put('update-item/{id}', 'API\ItemController@update');
-// Route::delete('delete-item/{id}', 'API\ItemController@destroy');
+Route::put('update-item/{id}', 'API\ItemController@update');
+Route::delete('delete-item/{id}', 'API\ItemController@destroy');

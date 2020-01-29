@@ -33,7 +33,7 @@
                             <td>KSH {{item.price}}</td>
                             <td class="text-center">
                                 <a @click="editItem(item)"><i class="fa fa-pencil blue"></i></a>
-                                <a href=""><i class="fa fa-trash pl-2 red"></i></a>
+                                <a @click="deleteItem(item.id)"><i class="fa fa-trash pl-2 red"></i></a>
                             </td>
                             </tr>
                         </tbody>
@@ -203,7 +203,63 @@ export default {
                     })
                 });
                 
-            }
+            },
+
+            updateItem() {
+                this.form.put('api/update-item/' + this.form.id)
+                    .then(response => {
+                        Toast.fire({
+                            type: 'success',
+                            title: 'Item updated successfully'
+                            })
+
+                        Fire.$emit('refreshItems');
+                        this.$refs.addItemModal.close()
+                        this.form.reset();
+                    })
+                    .catch(() => {
+                        Toast.fire({
+                            type: 'error',
+                            title: 'Something went wrong. Try again...'
+                        })
+                    })
+                },
+
+                deleteItem(id) {
+                Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete item!'
+                        })
+                        .then((result) => {
+
+                            // Send request to the server
+                            if (result.value) {
+                            axios.delete('api/delete-item/' + id)
+                            .then(() => {
+                                Swal.fire(
+                                'Deleted!',
+                                'The item has been deleted.',
+                                'success')
+
+                                //Fire refresh content event
+                                Fire.$emit('refreshItems');
+
+                            })
+                        .catch(() => {
+                                Swal(
+                                "Failed!", 
+                                "There was something wrong.", 
+                                "warning");
+
+                                });
+                            }
+                        })
+            },
     }
     
 }

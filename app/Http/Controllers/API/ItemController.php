@@ -95,7 +95,17 @@ class ItemController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $item = Product::findorFail($id);
+
+        // Validate
+        $this->validate($request, [
+            'item_name' => 'required|string|max:191',
+            'item_description' => 'sometimes',
+            'price' => 'required|gt:5',
+        ]);
+
+        // Update
+        $item->update($request->all());
     }
 
     /**
