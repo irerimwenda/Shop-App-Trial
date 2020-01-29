@@ -22,6 +22,8 @@ let Toast = Swal.mixin({
     showConfirmButton: false,
     timer: 3000
   })
+  
+  window.Toast = Toast;
 
 import VueNumeric from 'vue-numeric'
 Vue.use(VueNumeric)

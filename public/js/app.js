@@ -2559,13 +2559,13 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       this.form.put('api/update-item/' + this.form.id).then(function (response) {
+        _this4.$refs.addItemModal.close();
+
         Toast.fire({
           type: 'success',
           title: 'Item updated successfully'
         });
         Fire.$emit('refreshItems');
-
-        _this4.$refs.addItemModal.close();
 
         _this4.form.reset();
       })["catch"](function () {
@@ -59445,6 +59445,7 @@ var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_1___default.a.mixin({
   showConfirmButton: false,
   timer: 3000
 });
+window.Toast = Toast;
 
 Vue.use(vue_numeric__WEBPACK_IMPORTED_MODULE_2___default.a);
 

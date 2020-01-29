@@ -208,13 +208,12 @@ export default {
             updateItem() {
                 this.form.put('api/update-item/' + this.form.id)
                     .then(response => {
+                        this.$refs.addItemModal.close()
                         Toast.fire({
                             type: 'success',
                             title: 'Item updated successfully'
                             })
-
                         Fire.$emit('refreshItems');
-                        this.$refs.addItemModal.close()
                         this.form.reset();
                     })
                     .catch(() => {
