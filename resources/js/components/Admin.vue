@@ -15,17 +15,33 @@
                 <div class="not-loading" v-if="!loadingData">
 
                     <div class="col-md-10 mx-auto" v-if="itemsAdded">
-                        <ul class="ul-1">
-                            <li class="li-1" v-for="item in items" :key="item.id">
-                                <p class="name">{{item.item_name}}</p>
-                                <p class="country">{{item.item_description}}</p>
-                                <a href="" class="site">Ksh {{item.price}}</a>
-                            </li>
+                        <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Item</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in items" :key="item.id">
+                            <th scope="row">{{item.id}}</th>
+                            <td>{{item.item_name}}</td>
+                            <td>{{item.item_description}}</td>
+                            <td>KSH {{item.price}}</td>
+                            <td class="text-center">
+                                <a @click="editItem(item)"><i class="fa fa-pencil blue"></i></a>
+                                <a href=""><i class="fa fa-trash pl-2 red"></i></a>
+                            </td>
+                            </tr>
+                        </tbody>
+                        </table>
 
-                            <li class="mt-3 text-center">
-                                <button class="btn btn-sm btn-primary" @click="addItem">Add another</button>
-                            </li>
-                        </ul>
+                        <div class="add-another-btn">
+                            <button class="btn btn-primary btn-sm" @click="addItem">Add another item</button>
+                        </div>
                     </div>
 
                     <div class="card" v-else>
@@ -159,6 +175,13 @@ export default {
             this.editmode = false;
             //this.form.clear()
             this.$refs.addItemModal.open()
+        },
+
+        editItem(item) {
+            this.editmode = true;
+            this.form.clear();
+            this.$refs.addItemModal.open()
+            this.form.fill(item);
         },
 
         createItem() {

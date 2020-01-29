@@ -2461,6 +2461,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
@@ -2508,6 +2528,12 @@ __webpack_require__.r(__webpack_exports__);
       this.editmode = false; //this.form.clear()
 
       this.$refs.addItemModal.open();
+    },
+    editItem: function editItem(item) {
+      this.editmode = true;
+      this.form.clear();
+      this.$refs.addItemModal.open();
+      this.form.fill(item);
     },
     createItem: function createItem() {
       var _this3 = this;
@@ -43689,32 +43715,54 @@ var render = function() {
             ? _c("div", { staticClass: "not-loading" }, [
                 _vm.itemsAdded
                   ? _c("div", { staticClass: "col-md-10 mx-auto" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "ul-1" },
-                        _vm._l(_vm.items, function(item) {
-                          return _c(
-                            "li",
-                            { key: item.id, staticClass: "li-1" },
-                            [
-                              _c("p", { staticClass: "name" }, [
-                                _vm._v(_vm._s(item.item_name))
+                      _c("table", { staticClass: "table table-bordered" }, [
+                        _vm._m(1),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.items, function(item) {
+                            return _c("tr", { key: item.id }, [
+                              _c("th", { attrs: { scope: "row" } }, [
+                                _vm._v(_vm._s(item.id))
                               ]),
                               _vm._v(" "),
-                              _c("p", { staticClass: "country" }, [
-                                _vm._v(_vm._s(item.item_description))
-                              ]),
+                              _c("td", [_vm._v(_vm._s(item.item_name))]),
                               _vm._v(" "),
-                              _c(
-                                "a",
-                                { staticClass: "site", attrs: { href: "" } },
-                                [_vm._v(_vm._s(item.price))]
-                              )
-                            ]
-                          )
-                        }),
-                        0
-                      )
+                              _c("td", [_vm._v(_vm._s(item.item_description))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v("KSH " + _vm._s(item.price))]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-center" }, [
+                                _c(
+                                  "a",
+                                  {
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.editItem(item)
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "fa fa-pencil" })]
+                                ),
+                                _vm._v(" "),
+                                _vm._m(2, true)
+                              ])
+                            ])
+                          }),
+                          0
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "add-another-btn" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary btn-sm",
+                            on: { click: _vm.addItem }
+                          },
+                          [_vm._v("Add another item")]
+                        )
+                      ])
                     ])
                   : _c("div", { staticClass: "card" }, [
                       _c("div", { staticClass: "card-body text-center" }, [
@@ -43725,7 +43773,7 @@ var render = function() {
                           }
                         }),
                         _vm._v(" "),
-                        _vm._m(1),
+                        _vm._m(3),
                         _vm._v(" "),
                         _c("div", { staticClass: "add-btn mt-3" }, [
                           _c(
@@ -44002,6 +44050,32 @@ var staticRenderFns = [
       },
       [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Item")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Description")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Price")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Actions")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { attrs: { href: "" } }, [
+      _c("i", { staticClass: "fa fa-trash pl-2" })
+    ])
   },
   function() {
     var _vm = this
